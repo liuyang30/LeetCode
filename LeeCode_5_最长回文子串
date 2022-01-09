@@ -1,0 +1,89 @@
+
+public class LeetCode_5 {
+
+
+    @Test
+    public void test1(){
+        String s = "aaaaa";
+        System.out.println(longestPalindrome(s));
+    }
+
+    public String longestPalindrome(String s) {
+
+        // 输入检查
+        if(s == null) return "";
+        if(s.length() == 0) return "";
+
+        // 记录最长回文子串的起点和终点
+        int begin = 0;
+        int end = 0;
+
+        // n行n列
+        int n = s.length();
+
+        // 创建数组
+        boolean[][] dp = new boolean[n][n];
+
+        // 初始化
+
+        // 主对角线
+        // 单个字符肯定是回文子串
+        for(int i = 0 ; i < n ; i++){
+            dp[i][i] = true;
+        }
+
+        // 对角线上面的斜线
+        for(int i = 0 ; i< n-1 ; i++){
+
+            // 如果 s[i] == s[i+1] ，则[i,i+1]就是一个回文子串
+            if(s.charAt(i) == s.charAt(i+1)) {
+
+                dp[i][i+1] = true;
+
+                // 更新最长回文子串的位置
+                begin = i;
+                end = i+1;
+            }
+        }
+
+
+        // 按斜线(左上到右下)遍历
+        // 含递推公式
+        for(int pos = 2 ; pos < n ; pos++){
+            int i = 0;
+            int j = pos;
+            while(j < n){
+
+                // 如果s[i] == s[j]
+                if( s.charAt(i) == s.charAt(j) ){
+
+                    if( i+1 == j ){ //如果两个字符相等，且相临，如"AA"
+                        dp[i][j] = true;
+                    }else if( i+1 < j ){ //如果两个字符相等，但不相邻，如"A......A"
+                        dp[i][j] = dp[i+1][j-1];
+                    }
+
+                }else{ // s[i] != s[j]
+                    dp[i][j] = false;
+                }
+
+                // 记录是否有新的更长的回文子串产生
+                if(dp[i][j] && j-i > end-begin){
+                    begin = i;
+                    end = j;
+                }
+
+                // 更新位置，沿斜线向下走
+                i++;
+                j++;
+            }
+        }
+
+        //LeetcodeUtils.print2DArrayInForm(dp);
+        //System.out.println("begin=" + begin + ",end=" + end);
+
+
+        return s.substring(begin , end+1);
+    }
+
+}
