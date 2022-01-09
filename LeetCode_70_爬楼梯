@@ -1,0 +1,41 @@
+public class LeetCode_70 {
+
+
+    @Test
+    public void test1(){
+
+    }
+
+    public int climbStairs(int n) {
+
+        // 输入检查
+        if(n == 0) return 0;
+        if(n == 1) return 1;
+
+        // 检查完 n=0 和 n=1 的情况后，
+        // n最坏的情况为2，由于数组的长度为n+1
+        // 保证后面的stair[2]不会越界
+
+
+        // 创建动态规划数组
+        // 创建长度为n+1的数组，这样最大下标就是n
+        int[] stair = new int[n+1];
+
+        // 初始化数组
+        stair[0] = 0;
+        stair[1] = 1;
+        stair[2] = 2;
+
+        for(int i = 3 ; i <= n ; i++){
+            stair[i] = stair[i-1] + stair[i-2];
+        }
+
+        // stair[i] = stair[i-1] + stair[i-2];
+        // 代表：要么从i-2的地方迈两阶上来，要么从i-1的地方迈一阶上来
+        // 注意：从i-2的地方迈两个一阶的情况被包含到【从i-1的地方迈一阶上来】之中
+
+        return stair[n];
+
+    }
+
+}
