@@ -1,5 +1,6 @@
 public class LeetCode_70 {
 
+
     public int climbStairs(int n) {
 
         // 输入检查
