@@ -1,0 +1,64 @@
+package dynamicProgramming;
+
+import org.junit.Test;
+
+public class LeetCode_11 {
+
+    @Test
+    public void test(){
+        int[] height = {1,8,6,2,5,4,8,3,7};
+        System.out.println(maxArea(height));
+    }
+
+    public int maxArea(int[] height) {
+
+        // 输入检查
+        if( height == null ) return 0;
+        if( height.length == 0 ) return 0;
+
+        // 数组长度
+        int len = height.length;
+
+        // 记录最大面积的左端和右端
+        int x = 0;
+        int y = len-1;
+        int maxArea = Math.min(height[x] , height[y]) * (y-x);
+
+        // 滑动窗口
+        int lo = 0; //左端
+        int hi = len-1; //右端
+
+        // 滑动过程
+        // 逐渐向中间收缩
+        while(lo < hi){
+
+            // 记录最优解
+            int tempArea = Math.min(height[lo] , height[hi]) * (hi-lo);
+            if(tempArea > maxArea){
+                maxArea = tempArea;
+                x = lo;
+                y = hi;
+            }
+
+            // 如果左边是短板
+            if( height[lo] <= height[hi] ){
+                // 找到lo右侧，最近的，比lo长的板子
+                int temp = height[lo];
+                while( lo < hi && height[lo] <= temp ){
+                    lo++;
+                }
+            }else{
+                // 找到hi左侧，最近的，比hi长的板子
+                int temp = height[hi];
+                while( lo < hi && height[hi] <= temp){
+                    hi--;
+                }
+            }
+
+        }
+
+        return maxArea;
+
+    }
+
+}
